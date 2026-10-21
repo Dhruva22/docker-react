@@ -1,0 +1,21 @@
+name: docker-react
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: build dev image
+        run: docker build -f Dockerfile.dev -t techied29/frontend .
+
+      - name: run tests
+        run: docker run -e CI=true techied29/frontend npm run test

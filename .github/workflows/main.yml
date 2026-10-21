@@ -33,17 +33,27 @@ jobs:
 
       - name: Smoke test the nginx container
         run: |
-          docker run -d -p 5173:80 --name docker-react techied29/frontend:latest
+          docker run -d -p 8080:80 --name docker-react techied29/frontend:latest
+          sleep 3
+          curl --fail http://localhost:8080
+          docker stop docker-react
+
+      - name: Create deployment package
+        if: github.event_name == 'push'
+        run: zip -r deploy.zip . -x '*.git*' 'node_modules/*' 'dist/*'
 
       - name: Deploy to AWS Elastic Beanstalk
-        uses: aws-actions/amazon-elastic-beanstalk-deploy@v1.0.2
+        if: github.event_name == 'push'
+        uses: einaregilsson/beanstalk-deploy@v22
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
-          aws-application-name: docker-react
+          aws-application-name: Docker-react
           aws-environment-name: docker-react-env
           aws-bucket-name: elasticbeanstalk-us-east-2-992903864012
-          aws-bucket-path: docker-react
+          aws-bucket-path: Docker-react
+          version_label: ${{ github.sha }}
+          deployment-package: deploy.zip
 
       

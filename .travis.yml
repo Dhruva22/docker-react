@@ -1,0 +1,15 @@
+version: '3.8'
+service:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:3000"
+  branch:
+    master:
+      - frontend
+  deploy:
+    on:
+      branch: master
+    

@@ -1,4 +1,4 @@
-name: docker-react
+name: Test and Build docker-react app
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [master]
 
 jobs:
-  test:
+  dev:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,3 +19,18 @@ jobs:
 
       - name: run tests
         run: docker run -e CI=true techied29/frontend npm run test
+
+  prod:
+    needs: dev
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: build production image
+        run: docker build -t techied29/frontend .
+
+      - name: Smoke test the nginx container
+        run: |
+          docker run -d -p 8080:80 --name docker-react techied29/frontend:latest

@@ -1,15 +1,12 @@
-version: '3.8'
-service:
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    ports:
-      - "5173:3000"
-  branch:
-    master:
-      - frontend
-  deploy:
-    on:
-      branch: master
-    
+language: node_js
+
+services:
+  - docker
+
+before_install:
+  - docker-compose -f docker-compose-dev.yml up -d --build
+
+script:
+  - docker exec frontend npm run test --
+
+

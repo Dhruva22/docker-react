@@ -33,4 +33,17 @@ jobs:
 
       - name: Smoke test the nginx container
         run: |
-          docker run -d -p 8080:80 --name docker-react techied29/frontend:latest
+          docker run -d -p 5193:80 --name docker-react techied29/frontend:latest
+
+      - name: Deploy to AWS Elastic Beanstalk
+        uses: aws-actions/amazon-elastic-beanstalk-deploy@v1.0.2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+          aws-application-name: docker-react
+          aws-environment-name: docker-react-env
+          aws-bucket-name: elasticbeanstalk-us-east-2-992903864012
+          aws-bucket-path: docker-react
+
+      

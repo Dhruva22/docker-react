@@ -6,8 +6,8 @@ COPY package*.json ./
 RUN npm ci
 COPY . .
 
-CMD ["npm", "run", "dev"]
+RUN npm run build
 
 FROM nginx
 EXPOSE 80
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/build /usr/share/nginx/html

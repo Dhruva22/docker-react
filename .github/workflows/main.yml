@@ -46,14 +46,14 @@ jobs:
         if: github.event_name == 'push'
         uses: einaregilsson/beanstalk-deploy@v22
         with:
-          aws-access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           region: us-east-2
-          application-name: Docker-react
-          environment-name: docker-react-env
-          existing-bucket-name: elasticbeanstalk-us-east-2-992903864012
-          aws-bucket-path: Docker-react
+          application_name: Docker-react
+          environment_name: Docker-react-env
+          existing_bucket_name: elasticbeanstalk-us-east-2-992903864012
+          bucket_path: Docker-react
           version_label: ${{ github.sha }}
-          deployment-package: deploy.zip
+          deployment_package: deploy.zip
 
       
